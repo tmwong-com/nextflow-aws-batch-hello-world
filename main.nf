@@ -1,8 +1,18 @@
+/*
+ * Simple Nextflow pipeline using Seqera Containers.
+ *
+ * Leveraging the Seqera Containers service means we do not need to provision AWS ECR ourselves.
+ * Container with awscli and samtools
+ * Build log: https://wave.seqera.io/view/builds/bd-290a6afdaa39442a_1
+ */
+
 // Default parameter input
 params.str = "Hello world!"
 
 // split process
 process split {
+    container 'community.wave.seqera.io/library/pip_awscli:290a6afdaa39442a'
+
     publishDir "results/lower"
     
     input:
@@ -19,6 +29,8 @@ process split {
 
 // convert_to_upper process
 process convert_to_upper {
+    container 'community.wave.seqera.io/library/pip_awscli:290a6afdaa39442a'
+
     publishDir "results/upper"
     tag "$y"
 
