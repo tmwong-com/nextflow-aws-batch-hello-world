@@ -1,8 +1,8 @@
 export AWS_ACCOUNT_ID=$(shell aws sts get-caller-identity --query Account --output text)
 export AWS_REGION=$(shell aws configure get region)
 
-export BATCH_JOB_QUEUE="NextGenomeSequencing"
-export BUCKET_URI=
+BATCH_JOB_QUEUE="NextGenomeSequencing"
+BUCKET_URI ?=
 
 echo:
 	@echo "AWS profile: ${AWS_PROFILE}"
@@ -31,4 +31,5 @@ run:
 		-ansi-log false \
 		-bucket-dir ${BUCKET_URI} \
 		-process.executor awsbatch \
-		-process.queue ${BATCH_JOB_QUEUE}
+		-process.queue ${BATCH_JOB_QUEUE} \
+		$(if $(TOWER_ACCESS_TOKEN),${NXF_OPTS} -with-tower,${NXF_OPTS})
